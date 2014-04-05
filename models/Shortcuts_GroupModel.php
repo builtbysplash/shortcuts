@@ -11,21 +11,29 @@ namespace Craft;
 
 class Shortcuts_GroupModel extends BaseModel
 {
-    protected function defineAttributes()
-    {
-        return array(
-            'id'   => AttributeType::Number,
-            'name' => AttributeType::Name,
-        );
-    }
+	protected function defineAttributes()
+	{
+		return array(
+			'id' => AttributeType::Number,
+			'name' => AttributeType::Name,
+			'elements' => AttributeType::Mixed,
+		);
+	}
 
-    public function getShortcuts()
-    {
-        return craft()->shortcuts->getShortcutsByGroupId($this->id);
-    }
+	public function getShortcuts()
+	{
+		return craft()->shortcuts->getShortcutsByGroupId($this->id);
+	}
 
-    function __toString()
-    {
-        return $this->name;
-    }
+	public function render()
+	{
+		return craft()->templates->render('Shortcuts/cp/group', array(
+			'group' => $this
+		));
+	}
+
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

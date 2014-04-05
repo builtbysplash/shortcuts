@@ -1,11 +1,17 @@
+body {
+    padding-bottom: 40px;
+}
+
 #shortcuts-bar {
     background: #333;
     display: block;
+    position: fixed;
+    bottom: 0;
     width: 100%;
     border-radius: 3px;
     background: whitesmoke;
     -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 -2px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 #shortcuts-bar:after {
@@ -34,10 +40,10 @@
     color: #888;
 }
 
-#shortcuts-bar ul li #shortcuts-add {
+#shortcuts-bar ul li #shortcuts-quickAdd {
     line-height: 10px;
     margin-top: 7px;
-    padding: 6px 6px;
+    padding: 6px 7px;
     height: 24px;
     margin-left: 5px;
     color: #333f4d;
@@ -59,7 +65,9 @@
     cursor: default;
 }
 
-#shortcuts-bar #newEntryButton {
-    margin-top: 4px;
+#shortcuts-bar #shortcuts-newEntry {
+    margin-top: 5px;
     float: right;
+    height: 27px;
+    line-height: 15px;
 }

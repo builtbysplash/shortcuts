@@ -1,0 +1,14 @@
+{% if group.shortcuts|length %}
+<li>
+	<div>
+		<a class="menubtn">{{ group.name }}</a>
+		<div class="menu">
+			<ul>
+				{% for element in group.elements %}
+					{{ element.render()|raw }}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</li>
+{% endif %}

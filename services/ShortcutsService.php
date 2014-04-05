@@ -16,7 +16,14 @@ class ShortcutsService extends BaseApplicationComponent
         $groupRecords = Shortcuts_GroupRecord::model()->with('shortcuts')->findAll();
         $groups = Shortcuts_GroupModel::populateModels($groupRecords, 'id');
 
-        return $groups;
+        $groupsWithModels = array();
+        foreach ($groups as $group)
+        {
+            $group->elements = Shortcuts_ShortcutModel::populateModels($group->shortcuts, 'id');
+            $groupsWithModels[] = $group;
+        }
+
+        return $groupsWithModels;
     }
 
     public function saveGroup(Shortcuts_GroupModel $group)
@@ -164,20 +171,5 @@ class ShortcutsService extends BaseApplicationComponent
         }
 
         return $shortcutRecord;
-    }
-
-    public function getFromCache()
-    {
-        return craft()->fileCache->get('shortcuts');
-    }
-
-    public function saveToCache($html)
-    {
-        craft()->fileCache->add('shortcuts', $html);
-    }
-
-    private function clearCache()
-    {
-        craft()->fileCache->delete('shortcuts');
     }
 }

@@ -1,0 +1,35 @@
+{% set sections = craft.sections.getEditableSections() %}
+{% set newEntrySections = [] %}
+
+{% for section in sections %}
+	{% if section.type != 'single' and currentUser.can('createEntries:'~section.id) %}
+		{% set newEntrySections = newEntrySections|merge([section]) %}
+	{% endif %}
+{% endfor %}
+
+<div id="shortcuts-bar">
+	<div class="container">
+		<nav>
+			<ul>
+			{% for element in bar.elements %}
+				{{ element.render()|raw }}
+			{% endfor %}
+			<li><div id="shortcuts-quickAdd" class="btn add icon"></div></li>
+			</ul>
+			{% if newEntrySections|length %}
+				{% if newEntrySections|length > 1 %}
+					<div id="shortcuts-newEntry" class="btn submit menubtn add icon">{{ "New Entry"|t }}</div>
+					<div class="menu">
+						<ul>
+							{% for section in newEntrySections %}
+								<li><a href="{{ url('entries/'~section.handle~'/new') }}">{{ section.name|t }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% else %}
+					<a id="shortcuts-newEntry" class="btn submit add icon" href="{{ url('entries/'~newEntrySections[0].handle~'/new') }}">{{ "New Entry"|t }}</a>
+				{% endif %}
+			{% endif %}
+		</nav>
+	</div>
+</div>
