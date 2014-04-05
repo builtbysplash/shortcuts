@@ -1,0 +1,96 @@
+{% extends "_layouts/cp" %}
+
+{% includeJsResource "shortcuts/js/shortcutsAdmin.js" %}
+
+{% set title = "Shortcuts"|t %}
+
+{% set groups = craft.shortcuts.getAllGroups() %}
+
+{% if groupId is defined %}
+    {% if groups[groupId] is not defined %}
+        {% exit 404 %}
+    {% endif %}
+    {% set shortcuts = groups[groupId].getShortcuts() %}
+{% else %}
+    {% set shortcuts = [] %}
+    {% set groupsWithShortcuts = craft.shortcuts.getGroupsWithShortcuts() %}
+    {% for groupWithShortcut in groupsWithShortcuts %}
+        {% set shortcuts = shortcuts|merge(groupWithShortcut.shortcuts) %}
+    {% endfor %}
+{% endif %}
+
+{% block sidebar %}
+
+    <nav>
+        <ul id="groups">
+            <li><a href="{{ url('shortcuts/') }}"{% if groupId is not defined %} class="sel"{% endif %}>{{ "All Shortcuts"|t }}</a></li>
+            {% for group in groups %}
+                <li><a href="{{ url('shortcuts/'~group.id) }}"{% if groupId is defined and group.id == groupId %} class="sel"{% endif %} data-id="{{ group.id }}">{{ group.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <div class="buttons">
+        <div id="newgroupbtn" class="btn add icon">{{ "New Group"|t }}</div>
+
+        {% if groupId is defined and groupId != 1 %}
+            <div id="groupsettingsbtn" class="btn settings icon menubtn" title="{{ 'Settings' }}"></div>
+            <div class="menu">
+                <ul>
+                    <!--<li><a data-action="rename" role="button">{{ "Rename selected group"|t }}</a></li>-->
+                    <li><a data-action="delete" role="button">{{ "Delete selected group"|t }}</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% set content %}
+
+    <p id="noshortcuts"{% if shortcuts %} class="hidden"{% endif %}>
+        {% if groupId is defined %}
+            {{ "This group doesn’t have any shortcuts yet."|t }}
+        {% else %}
+            {{ "No shortcuts exist yet."|t }}
+        {% endif %}
+    </p>
+
+    {% if shortcuts %}
+        <table id="shortcuts" class="data collapsible">
+            <thead>
+                <th scope="col">{{ "Name"|t }}</th>
+                <th scope="col">{{ "Uri"|t }}</th>
+                {% if groupId is not defined %}<th scope="col">{{ "Group"|t }}</th>{% endif %}
+                <td class="thin"></td>
+            </thead>
+            <tbody>
+                {% for shortcut in shortcuts %}
+                    <tr data-id="{{ shortcut.id }}" data-name="{{ shortcut.name|t }}">
+                        <th scope="row" data-title="{{ 'Name'|t }}"><a href="{{ url('shortcuts/edit/' ~ shortcut.id) }}">{{ shortcut.name|t }}</a></th>
+                        <td data-title="{{ 'Uri'|t }}"><code>{{ shortcut.uri }}</code></td>
+                        {% if groupId is not defined %}<td data-title="{{ 'Group'|t }}">{{ shortcut.group.name }}</td>{% endif %}
+                        <td class="thin"><a class="delete icon" title="{{ 'Delete'|t }}" role="button"></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if groups %}
+        <div class="buttons">
+            {% set newShortcutUrl = url('shortcuts/new', (groupId is defined ? { groupId: groupId } : null)) %}
+            <a href="{{ newShortcutUrl }}" class="submit btn add icon">{{ "New Shortcut"|t }}</a>
+        </div>
+    {% endif %}
+
+{% endset %}
+
+{% set js %}
+    new Craft.AdminTable({
+        tableSelector: '#shortcuts',
+        noObjectsSelector: '#noshortcuts',
+        deleteAction: 'shortcuts/deleteShortcut'
+    });
+{% endset %}
+{% includeJs js %}

@@ -1,0 +1,103 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% if shortcutId is defined %}
+    {% set shortcut = craft.shortcuts.getShortcutById(shortcutId) %}
+    {% if not shortcut %}
+        {% exit 404 %}
+    {% endif %}
+{% endif %}
+
+{% set groups = craft.shortcuts.getAllGroups() %}
+{% if not groups %}
+    {% exit 404 %}
+{% endif %}
+
+{% set groupId = craft.request.getQuery('groupId') %}
+
+{% if not groupId %}
+    {% if shortcut is defined %}
+        {% set groupId = shortcut.groupId %}
+    {% else %}
+        {% set groupId = groups|keys[0] %}
+    {% endif %}
+{% endif %}
+
+{% if groups[groupId] is not defined %}
+    {% exit 404 %}
+{% endif %}
+
+{% set shortcutUri = craft.request.getQuery('uri') %}
+{% set shortcutCut = craft.request.getQuery('cut') %}
+
+{% if not shortcutUri %}
+    {% set shortcutUri = "" %}
+{% endif %}
+
+{% if shortcutCut %}
+    {% set shortcutUri = shortcutUri ~ '?cut=' ~ shortcutCut %}
+{% endif %}
+
+{% set crumbs = [
+    { label: "Shortcuts"|t, url: url('shortcuts') },
+    { label: groups[groupId].name, url: url('shortcuts/'~groupId) }
+] %}
+
+{% if shortcutId is defined %}
+    {% set title = shortcut.name %}
+{% else %}
+    {% set title = "Create a new shortcut"|t %}
+{% endif %}
+
+{% set content %}
+    <form method="post" action="" accept-charset="UTF-8" data-saveshortcut="1">
+        <input type="hidden" name="action" value="shortcuts/saveShortcut">
+        <input type="hidden" name="redirect" value="shortcuts/">
+        {% if shortcutId is defined %}
+            <input type="hidden" name="shortcutId" value="{{ shortcutId }}">
+        {% endif %}
+
+        {% set groupOptions = [] %}
+        {% for group in groups %}
+            {% set groupOptions = groupOptions|merge([{ label: group.name, value: group.id }]) %}
+        {% endfor %}
+        {{ forms.selectField({
+            first: true,
+            label: "Group"|t,
+            instructions: "Which group should this shortcut be displayed in?"|t,
+            id: 'group',
+            name: 'group',
+            options: groupOptions,
+            value: groupId
+        }) }}
+
+        {{ forms.textField({
+            label: "Name"|t,
+            instructions: "What this shortcut will be called in the CP."|t,
+            id: 'name',
+            name: 'name',
+            value: (shortcut is defined ? shortcut.name : null),
+            errors: (shortcut is defined ? shortcut.getErrors('name') : null),
+            required: true,
+            translatable: true,
+            autofocus: true
+        }) }}
+
+        {{ forms.textField({
+            label: "Uri"|t,
+            instructions: "Where this shortcut should redirect you."|t,
+            id: 'uri',
+            class: 'code',
+            name: 'uri',
+            value: (shortcut is defined ? shortcut.uri : shortcutUri),
+            errors: (shortcut is defined ? shortcut.getErrors('uri') : null),
+            required: true,
+        }) }}
+
+        <hr>
+
+        <div class="buttons">
+            <input type="submit" class="btn submit" value="{{ 'Save'|t }}">
+        </div>
+    </form>
+{% endset %}
