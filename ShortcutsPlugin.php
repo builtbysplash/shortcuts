@@ -38,7 +38,7 @@ class ShortcutsPlugin extends BasePlugin
 
 	public function init()
 	{
-		if (craft()->request->isCpRequest())
+		if (craft()->request->isCpRequest() && craft()->userSession->isAdmin())
 		{
 			// Include required styles and javascript
 			craft()->templates->includeCssResource('shortcuts/css/shortcuts.css');

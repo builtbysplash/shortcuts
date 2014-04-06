@@ -11,12 +11,8 @@ namespace Craft;
 
 class Shortcuts_BarModel extends BaseModel
 {
-	protected function defineAttributes()
-	{
-		return array(
-			'elements' => AttributeType::Mixed,
-		);
-	}
+
+	public $elements;
 
 	public function init($groupsWithShortcuts)
 	{

@@ -11,12 +11,13 @@ namespace Craft;
 
 class Shortcuts_GroupModel extends BaseModel
 {
+	public $elements;
+
 	protected function defineAttributes()
 	{
 		return array(
 			'id' => AttributeType::Number,
 			'name' => AttributeType::Name,
-			'elements' => AttributeType::Mixed,
 		);
 	}
 

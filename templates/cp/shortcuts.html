@@ -1,15 +1,8 @@
+{% includeJsResource "shortcuts/js/shortcuts.js" %}
+
 {% set js %}
 $('{% spaceless %}{{ barHtml|raw }}{% endspaceless %}').appendTo($('body'));
-
-$(document).ready(function() {
-    $('#shortcuts-quickAdd').click(function() {
-    var uri = window.location.href.replace(Craft.baseCpUrl + '/', '');;
-    var params = {
-        uri: uri
-    };
-    window.location.href = Craft.getCpUrl('shortcuts/new', params);
-    });
-});
+var shortcutsBar = new ShortcutsBar();
 {% endset %}
 
 {% includeJs js %}

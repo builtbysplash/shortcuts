@@ -10,7 +10,7 @@
 <div id="shortcuts-bar">
 	<div class="container">
 		<nav>
-			<ul>
+			<ul id="shortcuts-nav">
 			{% for element in bar.elements %}
 				{{ element.render()|raw }}
 			{% endfor %}

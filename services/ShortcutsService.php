@@ -32,8 +32,6 @@ class ShortcutsService extends BaseApplicationComponent
 
         $groupRecord->name = $group->name;
 
-        $this->clearCache();
-
         if ($groupRecord->validate())
         {
             $groupRecord->save(false);
@@ -55,8 +53,6 @@ class ShortcutsService extends BaseApplicationComponent
 
     public function deleteGroupById($groupId)
     {
-        $this->clearCache();
-
         $affectedRows = craft()->db->createCommand()->delete('shortcuts_groups', array('id' => $groupId));
         return (bool) $affectedRows;
     }
@@ -106,8 +102,6 @@ class ShortcutsService extends BaseApplicationComponent
         $shortcutRecord->groupId = $shortcut->groupId;
         $shortcutRecord->uri = $shortcut->uri;
 
-        $this->clearCache();
-
         if ($shortcutRecord->validate())
         {
             $shortcutRecord->save(false);
@@ -129,8 +123,6 @@ class ShortcutsService extends BaseApplicationComponent
 
     public function deleteShortcutById($shortcutId)
     {
-        $this->clearCache();
-
         $affectedRows = craft()->db->createCommand()->delete('shortcuts_shortcuts', array('id' => $shortcutId));
         return (bool) $affectedRows;
     }
