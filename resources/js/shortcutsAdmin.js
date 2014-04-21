@@ -1,15 +1,4 @@
-/*!
- * Craft by Pixel & Tonic
- *
- * @package   Craft
- * @author    Pixel & Tonic, Inc.
- * @copyright Copyright (c) 2013, Pixel & Tonic, Inc.
- * @license   http://buildwithcraft.com/license Craft License Agreement
- * @link      http://buildwithcraft.com
- */
-
 (function($) {
-
 
 var ShortcutsAdmin = Garnish.Base.extend({
 
@@ -149,6 +138,5 @@ Garnish.$doc.ready(function()
 {
     Craft.ShortcutsAdmin = new ShortcutsAdmin();
 });
-
 
 })(jQuery);
