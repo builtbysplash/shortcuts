@@ -1,7 +1,7 @@
 {% includeJsResource "shortcuts/js/shortcuts.js" %}
 
 {% set js %}
-if ($('#shortcuts-bar').length == 0) {
+if ($('#shortcuts-bar').length == 0 && $('body > .container').length == 1) {
 	$('{% spaceless %}{{ barHtml|raw }}{% endspaceless %}').appendTo($('body'));
 	var shortcutsBar = new ShortcutsBar();
 }
