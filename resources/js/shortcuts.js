@@ -19,7 +19,7 @@ var ShortcutsBar = Garnish.Base.extend(
 
 		// Activate mobile button
 		this.$mobileButton.click(function() {
-			$('#shortcuts-bar').toggle();
+			$('#shortcuts-bar').toggleClass('mobile');
 		});
 	}
 });
