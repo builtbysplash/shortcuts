@@ -14,7 +14,7 @@
 			{% for element in bar.elements %}
 				{{ element.render()|raw }}
 			{% endfor %}
-			<li><div id="shortcuts-quickAdd" class="btn add icon"></div></li>
+			<li><div id="shortcuts-quickAdd" class="btn add icon"><span id="shortcuts-quickAddText">{{ "New shortcut"|t }}</span></div></li>
 			</ul>
 			{% if newEntrySections|length %}
 				{% if newEntrySections|length > 1 %}
@@ -33,3 +33,5 @@
 		</nav>
 	</div>
 </div>
+
+<div id="shortcuts-mobileButton" class="btn icon" data-icon="list">Shortcuts</div>
