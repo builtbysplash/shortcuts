@@ -19,8 +19,8 @@ class Shortcuts_ShortcutRecord extends BaseRecord
     protected function defineAttributes()
     {
         return array(
-            'name' => AttributeType::String,
-            'uri' => AttributeType::String,
+            'name' => array(AttributeType::String, 'required' => true),
+            'uri' => array(AttributeType::String, 'required' => true),
         );
     }
 
