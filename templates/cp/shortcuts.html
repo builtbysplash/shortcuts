@@ -1,8 +1,10 @@
 {% includeJsResource "shortcuts/js/shortcuts.js" %}
 
 {% set js %}
-$('{% spaceless %}{{ barHtml|raw }}{% endspaceless %}').appendTo($('body'));
-var shortcutsBar = new ShortcutsBar();
+if ($('#shortcuts-bar').length == 0) {
+	$('{% spaceless %}{{ barHtml|raw }}{% endspaceless %}').appendTo($('body'));
+	var shortcutsBar = new ShortcutsBar();
+}
 {% endset %}
 
 {% includeJs js %}
